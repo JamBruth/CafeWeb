@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kopi Senja - Cafe & Resto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #6f4e37;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #5c3a21;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #6f4e37;
+        }
+        .menu-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .login-box {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #6f4e37;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #5c3a21;
+        }
+        .hidden {
+            display: none;
+        }
+        .admin-panel {
+            background-color: #ffe6e6;
+            border: 1px solid #ff4d4d;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Kopi Senja Cafe</h1>
+        <p>Tempat nongkrong santai dan inspiratif</p>
+    </header>
+
+    <nav>
+        <a href="#" onclick="showPage('home')">Beranda</a>
+        <a href="#" onclick="showPage('menu')">Menu</a>
+        <a href="#" onclick="showPage('login')">Login Admin</a>
+    </nav>
+
+    <div class="container">
+        <!-- HALAMAN BERANDA -->
+        <div id="home-page">
+            <h2>Selamat Datang di Kopi Senja!</h2>
+            <p>Nikmati berbagai varian kopi pilihan dan makanan ringan dengan suasana yang nyaman untuk bekerja maupun bersantai bersama teman.</p>
+            <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80" alt="Cafe" style="width:100%; border-radius: 5px; margin-top: 15px;">
+        </div>
+
+        <!-- HALAMAN MENU -->
+        <div id="menu-page" class="hidden">
+            <h2>Menu Andalan</h2>
+            <div class="menu-item">
+                <span>Espresso Manual Brew</span>
+                <strong>Rp 25.000</strong>
+            </div>
+            <div class="menu-item">
+                <span>Caffe Latte Artisan</span>
+                <strong>Rp 32.000</strong>
+            </div>
+            <div class="menu-item">
+                <span>Croissant Butter</span>
+                <strong>Rp 20.000</strong>
+            </div>
+        </div>
+
+        <!-- HALAMAN LOGIN ADMIN (Simulasi Kerentanan) -->
+        <div id="login-page" class="hidden">
+            <div class="login-box">
+                <h2>Admin Login</h2>
+                <p style="font-size: 12px; color: #666;">Gunakan form ini untuk masuk ke dashboard pengelola cafe.</p>
+                
+                <div id="error-msg" style="color: red; font-size: 14px; margin-bottom: 10px;"></div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <label>Username:</label>
+                    <input type="text" id="username" placeholder="Masukkan username">
+                    
+                    <label>Password:</label>
+                    <input type="password" id="password" placeholder="Masukkan password">
+                    
+                    <button type="submit">Masuk</button>
+                </form>
+
+                <!-- Panel Admin (Tersembunyi sebelum login sukses) -->
+                <div id="adminPanel" class="hidden admin-panel">
+                    <h3>🎉 Selamat Datang, Administrator!</h3>
+                    <p>Flag / Rahasia Cafe: <code>FLAG{k0p1_53nj4_m4ntap_347}</code></p>
+                    <p>Status: Akses tingkat lanjut diberikan. Anda dapat mengelola data transaksi di sini.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi navigasi sederhana antar tab
+        function showPage(pageId) {
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('menu-page').classList.add('hidden');
+            document.getElementById('login-page').classList.add('hidden');
+
+            document.getElementById(pageId + '-page').classList.remove('hidden');
+        }
+
+        // Simulasi Logika Login yang rentan untuk keperluan tes
+        function handleLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+            const adminPanel = document.getElementById('adminPanel');
+
+            errorMsg.innerText = "";
+
+            // Simulasi celah: Logika autentikasi sisi klien yang lemah / rentan bypass
+            // Contoh kerentanan logika (Logical Flaw / Hardcoded check di frontend)
+            if (user === "admin" && pass === "admin123" || user.includes("' OR '1'=='1")) {
+                adminPanel.classList.remove('hidden');
+                document.getElementById('loginForm').classList.add('hidden');
+            } else {
+                errorMsg.innerText = "Login Gagal! Username atau password salah.";
+            }
+        }
+    </script>
+
+</body>
+</html>
